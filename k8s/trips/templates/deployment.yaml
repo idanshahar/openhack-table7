@@ -26,18 +26,18 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: SQL_USER
-            value: "sqlserver0mu5980.database.windows.net"
+            value: sqladmin0Mu5980
           - name: SQL_PASSWORD
             value: gK79w4F79
           - name: SQL_SERVER
-            value: mydrivingDB
+            value: sqlserver0mu5980.database.windows.net
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/trips/healthcheck
               port: http
           readinessProbe:
             httpGet:
