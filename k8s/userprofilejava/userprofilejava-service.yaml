@@ -7,11 +7,11 @@ spec:
   selector:
     app: userprofilejava
   ports:
-     protocol: TCP
+    - protocol: TCP
       name: userprofilejava-http
       port: 80
       targetPort: 80
-     protocol: TCP
+    - protocol: TCP
       name: userprofilejava-https
       port: 443
       targetPort: 443

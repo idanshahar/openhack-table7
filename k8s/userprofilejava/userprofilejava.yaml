@@ -15,7 +15,7 @@ spec:
         app: userprofilejava
     spec:
       containers:
-          image: registry0mu5980.azurecr.io/userprofilejava:latest
+        - image: registry0mu5980.azurecr.io/userprofilejava:latest
           imagePullPolicy: IfNotPresent
           name: userprofilejava
           livenessProbe:
@@ -31,10 +31,10 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           ports:
-             containerPort: 80
+            - containerPort: 80
               name: http
               protocol: TCP
-             containerPort: 443
+            - containerPort: 443
               name: https
               protocol: TCP
           resources:
@@ -45,11 +45,11 @@ spec:
               memory: "128Mi"
               cpu: "500m"
           env:
-              name: SQL_USER
+            - name: SQL_USER
               value: sqladmin0Mu5980
-              name: SQL_PASSWORD
+            - name: SQL_PASSWORD
               value: gK79w4F79
-              name: SQL_SERVER
+            - name: SQL_SERVER
               value: sqlserver0mu5980.database.windows.net
-              name: SQL_DBNAME
+            - name: SQL_DBNAME
               value: mydrivingDB
