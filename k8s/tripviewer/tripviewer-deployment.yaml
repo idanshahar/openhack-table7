@@ -34,6 +34,6 @@ spec:
               cpu: "500m"
           env:
             - name: USERPROFILE_API_ENDPOINT
-              value: http://userprofile-svc:80
+              value: http://api-userprofile-svc:80
             - name: TRIPS_API_ENDPOINT
-              value: http://incendiary-lynx-trips:80
+              value: http://api-trips-svc:80
