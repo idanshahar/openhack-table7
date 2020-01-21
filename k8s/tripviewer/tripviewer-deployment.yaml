@@ -36,4 +36,4 @@ spec:
             - name: USERPROFILE_API_ENDPOINT
               value: http://userprofile-svc:80
             - name: TRIPS_API_ENDPOINT
-              value: http://trips-svc:80
+              value: http://incendiary-lynx-trips:80
