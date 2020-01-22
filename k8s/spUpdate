@@ -1,0 +1,19 @@
+aad Server app : aksopenhack | AppID : 72a7ed5c-23da-476e-aeae-45d17a7d4751 | secret : 4sD.Rz-BcB1GR9?WMqQO@jdd0:bNlYpM
+aad Client app  : AKSAzureADClient | AppID: d1f8b80a-1f4a-479b-83fa-e84c7f4fa313
+tenant id : e0a8d5d6-9574-40df-a69d-bd3f3e6029c2
+aks sp : 69db4046-48ce-47bf-a081-3304b858ac86 | aks sp secret : .:Ktge34m-FLlwv=WcwA8A2u:PegTF8R
+
+kubectl create secret generic kvcreds --from-literal clientid=69db4046-48ce-47bf-a081-3304b858ac8 --from-literal clientsecret=.:Ktge34m-FLlwv=WcwA8A2u:PegTF8R --type=azure/kv
+
+ az aks update-credentials -g teamResources -n aksopenhack --reset-aad --aad-server-app-id 72a7ed5c-23da-476e-aeae-45d17a7d4751 --aad-server-app-secret 4sD.Rz-BcB1GR9?WMqQO@jdd0:bNlYpM --aad-client-app-id d1f8b80a-1f4a-479b-83fa-e84c7f4fa313 --aad-tenant-id e0a8d5d6-9574-40df-a69d-bd3f3e6029c2
+ 
+KV_NAME=openhack-table7
+69db4046-48ce-47bf-a081-3304b858ac86
+ # [Required for version < v0.0.13] Assign Reader Role to the service principal for your keyvault
+
+az role assignment create --role Reader --assignee 69db4046-48ce-47bf-a081-3304b858ac86 --scope /subscriptions/78f223ec-094a-44f0-89f1-d30dcfff5eb6/resourcegroups/teamResources/providers/Microsoft.KeyVault/vaults/openhack-table7
+
+# Assign key vault permissions to your service principal
+az keyvault set-policy -n $KV_NAME --key-permissions get --spn 69db4046-48ce-47bf-a081-3304b858ac86
+az keyvault set-policy -n $KV_NAME --secret-permissions get --spn 69db4046-48ce-47bf-a081-3304b858ac86
+az keyvault set-policy -n $KV_NAME --certificate-permissions get --spn 69db4046-48ce-47bf-a081-3304b858ac86
