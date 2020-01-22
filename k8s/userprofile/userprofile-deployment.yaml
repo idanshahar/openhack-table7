@@ -45,13 +45,31 @@ spec:
               memory: "128Mi"
               cpu: "500m"
           env:
+            - name: CONFIG_FILES_PATH
+              value: /kvmnt
             - name: SQL_USER
               value: sqladmin0Mu5980
-            - name: SQL_PASSWORD
-              value: gK79w4F79
             - name: SQL_SERVER
               value: sqlserver0mu5980.database.windows.net
             - name: SQL_DBNAME
               value: mydrivingDB
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
+          volumeMounts:
+            - name: kv-volume
+              mountPath: /kvmnt
+              readOnly: true
+      volumes:
+        - name : kv-volume
+          flexVolume:
+            driver: "azure/kv"
+            secretRef:
+              name: kvcreds                             # [OPTIONAL] not required if using Pod Identity
+            options:
+              keyvaultname: "openhack-table7"              # [REQUIRED] the name of the KeyVault
+              keyvaultobjectnames: "openhack-sqlserver-password"         # [REQUIRED] list of KeyVault object names (semi-colon separated)
+              keyvaultobjectaliases: SQL_PASSWORD
+              keyvaultobjecttypes: secret               # [REQUIRED] list of KeyVault object types: secret, key, cert
+              resourcegroup: "teamResources"        # [REQUIRED for version < v0.0.14] the resource group of the KeyVault
+              subscriptionid: "78f223ec-094a-44f0-89f1-d30dcfff5eb6"                 # [REQUIRED for version < v0.0.14] the subscription ID of the KeyVault
+              tenantid: "e0a8d5d6-9574-40df-a69d-bd3f3e6029c2"                    # [REQUIRED] the tenant ID of the KeyVaul
