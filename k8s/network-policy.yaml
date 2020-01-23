@@ -1,0 +1,66 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+    name: poi-network-policy
+    namespace: api-dev
+spec:
+    podSelector:
+        matchLabels:
+            app: poi
+    ingress:
+        - from:
+              - namespaceSelector: {}
+                podSelector:
+                    matchLabels:
+                        app: tripsviewer
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+    name: trips-network-policy
+    namespace: api-dev
+spec:
+    podSelector:
+        matchLabels:
+            app: trips
+    ingress:
+        - from:
+              - namespaceSelector: {}
+                podSelector:
+                    matchLabels:
+                        app: tripsviewer
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+    name: userprofile-network-policy
+    namespace: api-dev
+spec:
+    podSelector:
+        matchLabels:
+            app: userprofile
+    ingress:
+        - from:
+              - namespaceSelector: {}
+                podSelector:
+                    matchLabels:
+                        app: tripsviewer
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+    name: userprofilejava-network-policy
+    namespace: api-dev
+spec:
+    podSelector:
+        matchLabels:
+            app: userprofilejava
+    ingress:
+        - from:
+              - namespaceSelector: {}
+                podSelector:
+                    matchLabels:
+                        app: tripsviewer

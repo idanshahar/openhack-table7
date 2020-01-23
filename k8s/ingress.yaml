@@ -1,14 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: poi-ingress
+  name: tripsviewer-ingress
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-  - host: api.5ee1b44bc9ed407a9dc1.northeurope.aksapp.io
+  - host: api.73e51f36840a4f8fbb68.westeurope.aksapp.io
     http:
       paths:
+      - backend:
+          serviceName: api-tripviewer-svc
+          servicePort: 80
+        path: /($|/).*
       - backend:
           serviceName: api-poi-svc
           servicePort: 80
@@ -17,3 +21,11 @@ spec:
           serviceName: api-userprofile-svc
           servicePort: 80
         path: /api/user($|/).*
+      - backend:
+          serviceName: api-userprofilejava-svc
+          servicePort: 80
+        path: /api/user-java($|/).*
+      - backend:
+          serviceName: api-trips-svc
+          servicePort: 80
+        path: /api/trips($|/).*
