@@ -1,15 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: userprofile-ingress
+  name: poi-ingress
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-  - host: 5ee1b44bc9ed407a9dc1.northeurope.aksapp.io
+  - host: api.5ee1b44bc9ed407a9dc1.northeurope.aksapp.io
     http:
       paths:
       - backend:
+          serviceName: api-poi-svc
+          servicePort: 80
+        path: /api/poi($|/).*
+      - backend:
           serviceName: api-userprofile-svc
           servicePort: 80
-        path: /api/user(/|$)(.*)
+        path: /api/user($|/).*
