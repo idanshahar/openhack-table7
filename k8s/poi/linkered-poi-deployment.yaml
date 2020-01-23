@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    deploy: poi
+  name: poi-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poi
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      creationTimestamp: null
+      labels:
+        app: poi
+    spec:
+      containers:
+      - env:
+        - name: CONFIG_FILES_PATH
+          value: /kvmnt
+        - name: SQL_USER
+          value: sqladmin0Mu5980
+        - name: SQL_SERVER
+          value: sqlserver0mu5980.database.windows.net
+        - name: SQL_DBNAME
+          value: mydrivingDB
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        image: registry0mu5980.azurecr.io/poi:latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /api/poi/healthcheck
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        name: poi
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/poi/healthcheck
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+        volumeMounts:
+        - mountPath: /kvmnt
+          name: kv-volume
+          readOnly: true
+      volumes:
+      - flexVolume:
+          driver: azure/kv
+          options:
+            keyvaultname: openhack-table7
+            keyvaultobjectaliases: SQL_PASSWORD
+            keyvaultobjectnames: openhack-sqlserver-password
+            keyvaultobjecttypes: secret
+            resourcegroup: teamResources
+            subscriptionid: 78f223ec-094a-44f0-89f1-d30dcfff5eb6
+            tenantid: e0a8d5d6-9574-40df-a69d-bd3f3e6029c2
+          secretRef:
+            name: kvcreds
+        name: kv-volume
+status: {}

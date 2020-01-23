@@ -1,0 +1,85 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  creationTimestamp: null
+  name: api-userprofilejava-svc.default.svc.cluster.local
+  namespace: api-dev
+spec:
+  retryBudget:
+    retryRatio: 0.9
+    minRetriesPerSecond: 10
+    ttl: 10s
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /api/user-java/healthcheck
+    name: GET /api/user-java/healthcheck
+    isRetryable: true
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+    - condition:
+        status:
+          max: 401
+          min: 401
+    - condition:
+        status:
+          max: 403
+          min: 403
+    - condition:
+        status:
+          max: 404
+          min: 404
+  - condition:
+      method: PATCH
+      pathRegex: /api/user-java/[^/]*
+    name: PATCH /api/user-java/{userID}
+    isRetryable: true
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+    - condition:
+        status:
+          max: 204
+          min: 204
+    - condition:
+        status:
+          max: 401
+          min: 401
+    - condition:
+        status:
+          max: 403
+          min: 403
+    - condition:
+        status:
+          max: 404
+          min: 404
+  - condition:
+      method: POST
+      pathRegex: /api/user-java/[^/]*
+    name: POST /api/user-java/{userID}
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+    - condition:
+        status:
+          max: 201
+          min: 201
+    - condition:
+        status:
+          max: 401
+          min: 401
+    - condition:
+        status:
+          max: 403
+          min: 403
+    - condition:
+        status:
+          max: 404
+          min: 404
